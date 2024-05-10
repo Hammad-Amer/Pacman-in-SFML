@@ -23,6 +23,9 @@ Ghost(string texture_str)
 
 
 
+
+
+
 };
 
 

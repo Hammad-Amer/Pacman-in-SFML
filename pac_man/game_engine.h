@@ -8,6 +8,7 @@
 #include"ghost.h"
 #include<thread>
 
+
 pthread_mutex_t MUTEX_GE=PTHREAD_MUTEX_INITIALIZER;
 
 void* game_engine_function(void* arg)
@@ -18,11 +19,17 @@ void* game_engine_function(void* arg)
 
 
 Ghost* RG=new Ghost("images/ALLSprites.png"); 
-RG->SG.setTextureRect(IntRect(30,30,30,30));  
+RG->SG.setTextureRect(IntRect(0,30,30,30));  
+
+Ghost* PG=new Ghost("images/ALLSprites.png"); 
+PG->SG.setTextureRect(IntRect(0,90,30,30));  
+
+
 Grid* grid=new Grid();
 
 pthread_mutex_unlock(&MUTEX_GE);  
 RG->SG.setPosition(Shared->RG_xcord,Shared->RG_ycord);
+PG->SG.setPosition(Shared->PG_xcord,Shared->PG_ycord);
 pthread_mutex_unlock(&MUTEX_GE);  
 
 Pacman pacman;
@@ -105,7 +112,12 @@ else if(CM=='D')
 }
 pthread_mutex_unlock(&MUTEX_GE);  
 
+
+//////////////////
 //Ghost movement
+/////////////////
+
+//RED
 
 FloatRect ghostRect;
 pthread_mutex_lock(&MUTEX_GE);
@@ -181,12 +193,84 @@ if(Shared->RG_onblock==false)
    
 }
 
-
-
 pthread_mutex_unlock(&MUTEX_GE);  
 
 
 
+FloatRect PghostRect;
+pthread_mutex_lock(&MUTEX_GE);
+
+PghostRect.width=25;
+PghostRect.height=25;
+if(Shared->PG_onblock==false)
+{
+    
+    if(Shared->PG_movement=='W')
+    {
+
+        PG->SG.setPosition(PG->SG.getPosition().x,PG->SG.getPosition().y-1);
+        PghostRect.left = PG->SG.getPosition().x;  
+        PghostRect.top = PG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,PghostRect)==true)
+        {
+
+            Shared->PG_xcord=PG->SG.getPosition().x/25-3;
+            Shared->PG_ycord=PG->SG.getPosition().y/25-2;
+            Shared->PG_onblock=true;
+        }
+
+    }
+
+    else if(Shared->PG_movement=='D')
+    {
+   
+        PG->SG.setPosition(PG->SG.getPosition().x+1,PG->SG.getPosition().y);
+        PghostRect.left = PG->SG.getPosition().x;  
+        PghostRect.top = PG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,PghostRect)==true)
+        {
+            Shared->PG_xcord=PG->SG.getPosition().x/25-3;
+            Shared->PG_ycord=PG->SG.getPosition().y/25-2;
+
+            Shared->PG_onblock=true;
+        }
+
+    }
+    else if(Shared->PG_movement=='S')
+    {
+  
+        PG->SG.setPosition(PG->SG.getPosition().x,PG->SG.getPosition().y+1);
+        PghostRect.left = PG->SG.getPosition().x;  
+        PghostRect.top = PG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,PghostRect)==true)
+        {
+            Shared->PG_xcord=PG->SG.getPosition().x/25-3;
+            Shared->PG_ycord=PG->SG.getPosition().y/25-2;
+            Shared->PG_onblock=true;
+        }
+
+    }
+    else if (Shared->PG_movement=='A')
+    {
+   
+        PG->SG.setPosition(PG->SG.getPosition().x-1,PG->SG.getPosition().y);
+        PghostRect.left = PG->SG.getPosition().x;  
+        PghostRect.top = PG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,PghostRect)==true)
+        {
+            Shared->PG_xcord=PG->SG.getPosition().x/25-3;
+            Shared->PG_ycord=PG->SG.getPosition().y/25-2;
+            Shared->PG_onblock=true;
+        }
+
+    }
+   
+}
+pthread_mutex_unlock(&MUTEX_GE);  
 
 
 
@@ -216,6 +300,17 @@ else if(RG->SG.getPosition().x >= 70  && RG->SG.getPosition().x < 80  && RG->SG.
    RG->SG.setPosition(690,400);
 }
 
+if(PG->SG.getPosition().x >= 710 && PG->SG.getPosition().x < 720 && PG->SG.getPosition().y==400)
+{
+    PG->SG.setPosition(90,400);
+
+
+}
+else if(PG->SG.getPosition().x >= 70  && PG->SG.getPosition().x < 80  && PG->SG.getPosition().y==400)
+{
+
+   PG->SG.setPosition(690,400);
+}
 
 
 //  NEXT MOVEMENT
@@ -285,6 +380,7 @@ pthread_mutex_unlock(&MUTEX_GE);
 window.draw(grid->FrontS);
 window.draw(pacman.SP);
 window.draw(RG->SG);
+window.draw(PG->SG);
 window.display();
 }
 

@@ -4,12 +4,11 @@
 #include"Shared.h"
 #include<cmath>
 
+//this is for the pink ghost
 
-//this is for the red ghost
+pthread_mutex_t MUTEX_PG=PTHREAD_MUTEX_INITIALIZER;
 
-pthread_mutex_t MUTEX_RG=PTHREAD_MUTEX_INITIALIZER;
-
-void* Ghost1_f(void* arg)
+void* Ghost2_f(void* arg)
 {
 
 Global_varibale* Shared; 
@@ -17,18 +16,15 @@ Shared=(Global_varibale*)(arg);
 
 while(1)
 {
-    
 
-    pthread_mutex_lock(&MUTEX_RG);
+    pthread_mutex_lock(&MUTEX_PG);
 
-        if(Shared->RG_onblock==true)
+        if(Shared->PG_onblock==true)
         {
 
-
-
-
         bool flag=false;
-        int Py=10,Px=10;
+        int Py=20,Px=10;
+
         for(int t1=0;t1<31;t1++)
         {   
             for(int t2=0;t2<28;t2++)
@@ -43,7 +39,7 @@ while(1)
                 {
                     Py=t1;  
                     Px=t2;
-              
+                    cout<<Py<<"   "<<Px<<endl;
                     flag=true;
                     break;
 
@@ -55,19 +51,37 @@ while(1)
             break;
         }
 
+       if(Shared->movement=='W')
+        {
+            Py-=4;
+        }
+        else if(Shared->movement=='A')
+        {
+            Px-=4;
+        }
+        else if(Shared->movement=='S')
+        {
+            Py+=4;
+        }
+        else if(Shared->movement=='D')
+        {
+            Px+=4;
+        }
 
+       // Py=27;
+       // Px=26;
             //xcord for horizonatal  //so columns
             //ycord for vertical    //so rows
             
-            int x=Shared->RG_xcord;
-            int y=Shared->RG_ycord;
+            int x=Shared->PG_xcord;
+            int y=Shared->PG_ycord;
 
 
 
             
              int Wdis=1000000,Adis=1000000,Sdis=1000000,Ddis=1000000;
         
-        if(Shared->RG_movement!='S' && (Shared->table[y-1][x]!='-' && Shared->table[y-1][x]!='|' && Shared->table[y-1][x]!='{' && Shared->table[y-1][x]!='}' &&
+        if(Shared->PG_movement!='S' && (Shared->table[y-1][x]!='-' && Shared->table[y-1][x]!='|' && Shared->table[y-1][x]!='{' && Shared->table[y-1][x]!='}' &&
             Shared->table[y-1][x]!='[' && Shared->table[y-1][x]!=']'))          
         {
             
@@ -75,7 +89,7 @@ while(1)
           
         }
 
-        if(Shared->RG_movement!='W' && (Shared->table[y+1][x]!='-' && Shared->table[y+1][x]!='|' && Shared->table[y+1][x]!='{' && Shared->table[y+1][x]!='}' &&
+        if(Shared->PG_movement!='W' && (Shared->table[y+1][x]!='-' && Shared->table[y+1][x]!='|' && Shared->table[y+1][x]!='{' && Shared->table[y+1][x]!='}' &&
             Shared->table[y+1][x]!='[' && Shared->table[y+1][x]!=']'))          
         {
             
@@ -83,7 +97,7 @@ while(1)
           
         }
 
-        if(Shared->RG_movement!='A' && (Shared->table[y][x+1]!='-' && Shared->table[y][x+1]!='|' && Shared->table[y][x+1]!='{' && Shared->table[y][x+1]!='}' &&
+        if(Shared->PG_movement!='A' && (Shared->table[y][x+1]!='-' && Shared->table[y][x+1]!='|' && Shared->table[y][x+1]!='{' && Shared->table[y][x+1]!='}' &&
             Shared->table[y][x+1]!='[' && Shared->table[y][x+1]!=']'))          
         {
             
@@ -91,7 +105,7 @@ while(1)
           
         }
 
-        if(Shared->RG_movement!='D' && (Shared->table[y][x-1]!='-' && Shared->table[y][x-1]!='|' && Shared->table[y][x-1]!='{' && Shared->table[y][x-1]!='}' &&
+        if(Shared->PG_movement!='D' && (Shared->table[y][x-1]!='-' && Shared->table[y][x-1]!='|' && Shared->table[y][x-1]!='{' && Shared->table[y][x-1]!='}' &&
             Shared->table[y][x-1]!='[' && Shared->table[y][x-1]!=']'))          
         {
             
@@ -106,30 +120,30 @@ while(1)
 
         if (Wdis == minDis ) 
         {
-            Shared->RG_movement = 'W';
+            Shared->PG_movement = 'W';
         } 
         else if (Adis == minDis) 
         {
-            Shared->RG_movement = 'A';
+            Shared->PG_movement = 'A';
         } 
         else if (Sdis == minDis )
         {
-            Shared->RG_movement = 'S';
+            Shared->PG_movement = 'S';
         } 
         else if (Ddis == minDis ) 
         {
 
-            Shared->RG_movement = 'D';
+            Shared->PG_movement = 'D';
         }
 
-              Shared->RG_onblock=false;
+              Shared->PG_onblock=false;
 
         }
-    pthread_mutex_unlock(&MUTEX_RG);
+    pthread_mutex_unlock(&MUTEX_PG);
 
   
 
 }
 
-pthread_mutex_destroy(&MUTEX_RG);
+pthread_mutex_destroy(&MUTEX_PG);
 }
