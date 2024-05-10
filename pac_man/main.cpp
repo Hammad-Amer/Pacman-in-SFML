@@ -19,6 +19,8 @@ using namespace std;
 #include"user_interface.h"
 #include"Ghost1_f.h"
 #include"Ghost2_f.h"
+#include"Ghost3_f.h"
+#include"Ghost4_f.h"
 #include"maze.h"
 
 
@@ -28,6 +30,8 @@ pthread_t game_engine;
 pthread_t user_int;
 pthread_t ghost1;
 pthread_t ghost2;
+pthread_t ghost3;
+pthread_t ghost4;
 
 int main()
 {
@@ -39,7 +43,9 @@ XInitThreads();
 pthread_create(&game_engine,NULL,game_engine_function,(void*)Shared);
 pthread_create(&user_int,NULL,User_interface,(void*)Shared);
 pthread_create(&ghost1,NULL,Ghost1_f,(void*)Shared);
- pthread_create(&ghost2,NULL,Ghost2_f,(void*)Shared);
+pthread_create(&ghost2,NULL,Ghost2_f,(void*)Shared);
+pthread_create(&ghost3,NULL,Ghost3_f,(void*)Shared);
+pthread_create(&ghost4,NULL,Ghost4_f,(void*)Shared);
 
  while(1)
  {

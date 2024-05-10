@@ -11,14 +11,11 @@ public:
 char next_movement;
 char movement;
 
-
 float RG_xcord;
 float RG_ycord;
 bool RG_onblock;
 char RG_movement;
 string RG_mode;
-
-
 
 float PG_xcord;
 float PG_ycord;
@@ -26,6 +23,17 @@ bool PG_onblock;
 char PG_movement;
 string PG_mode;
 
+float BG_xcord;
+float BG_ycord;
+bool BG_onblock;
+char BG_movement;
+string BG_mode;
+
+float OG_xcord;
+float OG_ycord;
+bool OG_onblock;
+char OG_movement;
+string OG_mode;
 
 
 char table[31][28];
@@ -48,13 +56,26 @@ Global_varibale()
     PG_movement='W';
     PG_mode="Target";
 
+    
+    BG_xcord=18*25;
+    BG_ycord=20*25;
+    BG_onblock=false;
+    BG_movement='W';
+    BG_mode="Target";
+    
+    OG_xcord=14*25;
+    OG_ycord=28*25;
+    OG_onblock=false;
+    OG_movement='W';
+    OG_mode="Target";
+
      for (int i = 0; i < 31; i++) 
      {
             for (int j = 0; j < 28; j++)
              {
                 table[i][j]=M.table[i][j];
             }   
- }
+    }
  }
 
 

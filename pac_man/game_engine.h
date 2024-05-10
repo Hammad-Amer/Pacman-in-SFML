@@ -22,14 +22,21 @@ Ghost* RG=new Ghost("images/ALLSprites.png");
 RG->SG.setTextureRect(IntRect(0,30,30,30));  
 
 Ghost* PG=new Ghost("images/ALLSprites.png"); 
-PG->SG.setTextureRect(IntRect(0,90,30,30));  
+PG->SG.setTextureRect(IntRect(0,60,30,30));  
 
+Ghost* BG=new Ghost("images/ALLSprites.png"); 
+BG->SG.setTextureRect(IntRect(0,90,30,30)); 
+
+Ghost* OG=new Ghost("images/ALLSprites.png"); 
+OG->SG.setTextureRect(IntRect(0,120,30,30)); 
 
 Grid* grid=new Grid();
 
 pthread_mutex_unlock(&MUTEX_GE);  
 RG->SG.setPosition(Shared->RG_xcord,Shared->RG_ycord);
 PG->SG.setPosition(Shared->PG_xcord,Shared->PG_ycord);
+BG->SG.setPosition(Shared->BG_xcord,Shared->BG_ycord);
+OG->SG.setPosition(Shared->OG_xcord,Shared->OG_ycord);
 pthread_mutex_unlock(&MUTEX_GE);  
 
 Pacman pacman;
@@ -196,6 +203,7 @@ if(Shared->RG_onblock==false)
 pthread_mutex_unlock(&MUTEX_GE);  
 
 
+//PINK
 
 FloatRect PghostRect;
 pthread_mutex_lock(&MUTEX_GE);
@@ -272,8 +280,158 @@ if(Shared->PG_onblock==false)
 }
 pthread_mutex_unlock(&MUTEX_GE);  
 
+//BLUE
+FloatRect BghostRect;
+pthread_mutex_lock(&MUTEX_GE);
 
+BghostRect.width=25;
+BghostRect.height=25;
+if(Shared->BG_onblock==false)
+{
+    
+    if(Shared->BG_movement=='W')
+    {
 
+        BG->SG.setPosition(BG->SG.getPosition().x,BG->SG.getPosition().y-1);
+        BghostRect.left = BG->SG.getPosition().x;  
+        BghostRect.top = BG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,BghostRect)==true)
+        {
+
+            Shared->BG_xcord=BG->SG.getPosition().x/25-3;
+            Shared->BG_ycord=BG->SG.getPosition().y/25-2;
+            Shared->BG_onblock=true;
+        }
+
+    }
+
+    else if(Shared->BG_movement=='D')
+    {
+   
+        BG->SG.setPosition(BG->SG.getPosition().x+1,BG->SG.getPosition().y);
+        BghostRect.left = BG->SG.getPosition().x;  
+        BghostRect.top = BG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,BghostRect)==true)
+        {
+            Shared->BG_xcord=BG->SG.getPosition().x/25-3;
+            Shared->BG_ycord=BG->SG.getPosition().y/25-2;
+
+            Shared->BG_onblock=true;
+        }
+
+    }
+    else if(Shared->BG_movement=='S')
+    {
+  
+        BG->SG.setPosition(BG->SG.getPosition().x,BG->SG.getPosition().y+1);
+        BghostRect.left = BG->SG.getPosition().x;  
+        BghostRect.top = BG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,BghostRect)==true)
+        {
+            Shared->BG_xcord=BG->SG.getPosition().x/25-3;
+            Shared->BG_ycord=BG->SG.getPosition().y/25-2;
+            Shared->BG_onblock=true;
+        }
+
+    }
+    else if (Shared->BG_movement=='A')
+    {
+   
+        BG->SG.setPosition(BG->SG.getPosition().x-1,BG->SG.getPosition().y);
+        BghostRect.left = BG->SG.getPosition().x;  
+        BghostRect.top = BG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,BghostRect)==true)
+        {
+            Shared->BG_xcord=BG->SG.getPosition().x/25-3;
+            Shared->BG_ycord=BG->SG.getPosition().y/25-2;
+            Shared->BG_onblock=true;
+        }
+
+    }
+   
+}
+pthread_mutex_unlock(&MUTEX_GE);  
+
+//Orange
+
+FloatRect OghostRect;
+pthread_mutex_lock(&MUTEX_GE);
+
+OghostRect.width=25;
+OghostRect.height=25;
+if(Shared->OG_onblock==false)
+{
+    
+    if(Shared->OG_movement=='W')
+    {
+
+        OG->SG.setPosition(OG->SG.getPosition().x,OG->SG.getPosition().y-1);
+        OghostRect.left = OG->SG.getPosition().x;  
+        OghostRect.top = OG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,OghostRect)==true)
+        {
+
+            Shared->OG_xcord=OG->SG.getPosition().x/25-3;
+            Shared->OG_ycord=OG->SG.getPosition().y/25-2;
+            Shared->OG_onblock=true;
+        }
+
+    }
+
+    else if(Shared->OG_movement=='D')
+    {
+   
+        OG->SG.setPosition(OG->SG.getPosition().x+1,OG->SG.getPosition().y);
+        OghostRect.left = OG->SG.getPosition().x;  
+        OghostRect.top = OG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,OghostRect)==true)
+        {
+            Shared->OG_xcord=OG->SG.getPosition().x/25-3;
+            Shared->OG_ycord=OG->SG.getPosition().y/25-2;
+
+            Shared->OG_onblock=true;
+        }
+
+    }
+    else if(Shared->OG_movement=='S')
+    {
+  
+        OG->SG.setPosition(OG->SG.getPosition().x,OG->SG.getPosition().y+1);
+        OghostRect.left = OG->SG.getPosition().x;  
+        OghostRect.top = OG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,OghostRect)==true)
+        {
+            Shared->OG_xcord=OG->SG.getPosition().x/25-3;
+            Shared->OG_ycord=OG->SG.getPosition().y/25-2;
+            Shared->OG_onblock=true;
+        }
+
+    }
+    else if (Shared->OG_movement=='A')
+    {
+   
+        OG->SG.setPosition(OG->SG.getPosition().x-1,OG->SG.getPosition().y);
+        OghostRect.left = OG->SG.getPosition().x;  
+        OghostRect.top = OG->SG.getPosition().y;   
+
+        if(grid->isGhostOnBlock(Shared->table,OghostRect)==true)
+        {
+            Shared->OG_xcord=OG->SG.getPosition().x/25-3;
+            Shared->OG_ycord=OG->SG.getPosition().y/25-2;
+            Shared->OG_onblock=true;
+        }
+
+    }
+   
+}
+pthread_mutex_unlock(&MUTEX_GE);  
 
 //teleportaion through tunnel
 
@@ -311,6 +469,31 @@ else if(PG->SG.getPosition().x >= 70  && PG->SG.getPosition().x < 80  && PG->SG.
 
    PG->SG.setPosition(690,400);
 }
+
+if(BG->SG.getPosition().x >= 710 && BG->SG.getPosition().x < 720 && BG->SG.getPosition().y==400)
+{
+    BG->SG.setPosition(90,400);
+
+
+}
+else if(BG->SG.getPosition().x >= 70  && BG->SG.getPosition().x < 80  && BG->SG.getPosition().y==400)
+{
+
+   BG->SG.setPosition(690,400);
+}
+
+if(OG->SG.getPosition().x >= 710 && OG->SG.getPosition().x < 720 && OG->SG.getPosition().y==400)
+{
+    OG->SG.setPosition(90,400);
+
+
+}
+else if(OG->SG.getPosition().x >= 70  && OG->SG.getPosition().x < 80  && OG->SG.getPosition().y==400)
+{
+
+   OG->SG.setPosition(690,400);
+}
+
 
 
 //  NEXT MOVEMENT
@@ -381,7 +564,10 @@ window.draw(grid->FrontS);
 window.draw(pacman.SP);
 window.draw(RG->SG);
 window.draw(PG->SG);
+window.draw(BG->SG);
+window.draw(OG->SG);
 window.display();
+
 }
 
 

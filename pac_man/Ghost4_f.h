@@ -4,11 +4,11 @@
 #include"Shared.h"
 #include<cmath>
 
-//this is for the pink ghost
+//this is for the blue ghost
 
-pthread_mutex_t MUTEX_PG=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_OG=PTHREAD_MUTEX_INITIALIZER;
 
-void* Ghost2_f(void* arg)
+void* Ghost4_f(void* arg)
 {
 
 Global_varibale* Shared; 
@@ -17,9 +17,9 @@ Shared=(Global_varibale*)(arg);
 while(1)
 {
 
-    pthread_mutex_lock(&MUTEX_PG);
+    pthread_mutex_lock(&MUTEX_OG);
 
-        if(Shared->PG_onblock==true)
+        if(Shared->OG_onblock==true)
         {
 
         bool flag=false;
@@ -51,36 +51,23 @@ while(1)
             break;
         }
 
-        if(Shared->movement=='W')
-        {
-            Py-=4;
-        }
-        else if(Shared->movement=='A')
-        {
-            Px-=4;
-        }
-        else if(Shared->movement=='S')
-        {
-            Py+=4;
-        }
-        else if(Shared->movement=='D')
-        {
-            Px+=4;
-        }
 
-
-            //xcord for horizonatal  //so columns
-            //ycord for vertical    //so rows
+            if(Shared->OG_xcord<Px+8 && Shared->OG_xcord>Px-8 && Shared->OG_ycord < Py+8 && Shared->BG_ycord>Py-8)
+            {
+                Py=32;
+                Px=0;
+            }
             
-            int x=Shared->PG_xcord;
-            int y=Shared->PG_ycord;
 
+            int x=Shared->OG_xcord;
+            int y=Shared->OG_ycord;
 
+            
 
             
              int Wdis=1000000,Adis=1000000,Sdis=1000000,Ddis=1000000;
         
-        if(Shared->PG_movement!='S' && (Shared->table[y-1][x]!='-' && Shared->table[y-1][x]!='|' && Shared->table[y-1][x]!='{' && Shared->table[y-1][x]!='}' &&
+        if(Shared->OG_movement!='S' && (Shared->table[y-1][x]!='-' && Shared->table[y-1][x]!='|' && Shared->table[y-1][x]!='{' && Shared->table[y-1][x]!='}' &&
             Shared->table[y-1][x]!='[' && Shared->table[y-1][x]!=']'))          
         {
             
@@ -88,7 +75,7 @@ while(1)
           
         }
 
-        if(Shared->PG_movement!='W' && (Shared->table[y+1][x]!='-' && Shared->table[y+1][x]!='|' && Shared->table[y+1][x]!='{' && Shared->table[y+1][x]!='}' &&
+        if(Shared->OG_movement!='W' && (Shared->table[y+1][x]!='-' && Shared->table[y+1][x]!='|' && Shared->table[y+1][x]!='{' && Shared->table[y+1][x]!='}' &&
             Shared->table[y+1][x]!='[' && Shared->table[y+1][x]!=']'))          
         {
             
@@ -96,7 +83,7 @@ while(1)
           
         }
 
-        if(Shared->PG_movement!='A' && (Shared->table[y][x+1]!='-' && Shared->table[y][x+1]!='|' && Shared->table[y][x+1]!='{' && Shared->table[y][x+1]!='}' &&
+        if(Shared->OG_movement!='A' && (Shared->table[y][x+1]!='-' && Shared->table[y][x+1]!='|' && Shared->table[y][x+1]!='{' && Shared->table[y][x+1]!='}' &&
             Shared->table[y][x+1]!='[' && Shared->table[y][x+1]!=']'))          
         {
             
@@ -104,7 +91,7 @@ while(1)
           
         }
 
-        if(Shared->PG_movement!='D' && (Shared->table[y][x-1]!='-' && Shared->table[y][x-1]!='|' && Shared->table[y][x-1]!='{' && Shared->table[y][x-1]!='}' &&
+        if(Shared->OG_movement!='D' && (Shared->table[y][x-1]!='-' && Shared->table[y][x-1]!='|' && Shared->table[y][x-1]!='{' && Shared->table[y][x-1]!='}' &&
             Shared->table[y][x-1]!='[' && Shared->table[y][x-1]!=']'))          
         {
             
@@ -119,30 +106,30 @@ while(1)
 
         if (Wdis == minDis ) 
         {
-            Shared->PG_movement = 'W';
+            Shared->OG_movement = 'W';
         } 
         else if (Adis == minDis) 
         {
-            Shared->PG_movement = 'A';
+            Shared->OG_movement = 'A';
         } 
         else if (Sdis == minDis )
         {
-            Shared->PG_movement = 'S';
+            Shared->OG_movement = 'S';
         } 
         else if (Ddis == minDis ) 
         {
 
-            Shared->PG_movement = 'D';
+            Shared->OG_movement = 'D';
         }
 
-              Shared->PG_onblock=false;
+              Shared->OG_onblock=false;
 
         }
-    pthread_mutex_unlock(&MUTEX_PG);
+    pthread_mutex_unlock(&MUTEX_OG);
 
   
 
 }
 
-pthread_mutex_destroy(&MUTEX_PG);
+pthread_mutex_destroy(&MUTEX_OG);
 }
