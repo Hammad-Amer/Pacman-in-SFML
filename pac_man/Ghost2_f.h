@@ -19,6 +19,11 @@ while(1)
 
     pthread_mutex_lock(&MUTEX_GE);
 
+
+        if(Shared->game_end==true)
+        {
+            break;
+        }
         if(Shared->PG_onblock==true)
         {
 
@@ -82,6 +87,11 @@ while(1)
         {
             Py=11;
             Px=14;
+        }
+        else if(Shared->PG_mode=="Scatter")
+        {
+            Py=0;
+            Px=28;
         }
             //xcord for horizonatal  //so columns
             //ycord for vertical    //so rows

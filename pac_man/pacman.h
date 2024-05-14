@@ -20,12 +20,13 @@ float ycord;
 
 Pacman()
 {
-    ycord=19;
-    xcord=24;
-    TP.loadFromFile("images/ALLSprites.png");
+    ycord=25;
+    xcord=16;
+    TP.loadFromFile("images/L_C.png");
     SP.setTexture(TP);
-    SP.setTextureRect(IntRect(0,0,30,30));   
+   
     SP.setPosition(xcord*25,ycord*25); 
-    SP.setScale(25.0f /30, 25.0f /30);
+    SP.setScale(25.0f /16.0f, 25.0f /16.f);
+  
 }
 };

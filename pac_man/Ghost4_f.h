@@ -19,6 +19,12 @@ while(1)
 
     pthread_mutex_lock(&MUTEX_GE);
 
+
+        if(Shared->game_end==true)
+        {
+            break;
+        }
+        
         if(Shared->OG_onblock==true)
         {
 
@@ -72,6 +78,11 @@ else if(Shared->OG_mode=="Locked")
         {
             Py=11;
             Px=14;
+        }
+        else if(Shared->OG_mode=="Scatter")
+        {
+            Py=31;
+            Px=28;
         }
             int x=Shared->OG_xcord;
             int y=Shared->OG_ycord;

@@ -42,7 +42,8 @@ bool OG_faster;
 float locked_delay;
 
 int key[2][2];
-
+bool game_end;
+bool game_closed;
 
 char table[31][28];
 
@@ -89,6 +90,8 @@ Global_varibale()
     PG_faster=0;
     RG_faster=0;
 
+    game_end=false;
+    game_closed=false;
 /*      OG
     1       2
 RG              BG

@@ -19,6 +19,12 @@ while(1)
 
     pthread_mutex_lock(&MUTEX_GE);
 
+
+        if(Shared->game_end==true)
+        {
+            break;
+        }
+        
         if(Shared->BG_onblock==true)
         {
 
@@ -104,6 +110,11 @@ else if(Shared->BG_mode=="Frightened")
         {
             Py=11;
             Px=14;
+        }
+        else if(Shared->BG_mode=="Scatter")
+        {
+            Py=31;
+            Px=0;
         }
             int x=Shared->BG_xcord;
             int y=Shared->BG_ycord;
