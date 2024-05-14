@@ -6,7 +6,7 @@
 
 //this is for the blue ghost
 
-pthread_mutex_t MUTEX_BG=PTHREAD_MUTEX_INITIALIZER;
+
 
 void* Ghost3_f(void* arg)
 {
@@ -17,14 +17,15 @@ Shared=(Global_varibale*)(arg);
 while(1)
 {
 
-    pthread_mutex_lock(&MUTEX_BG);
+    pthread_mutex_lock(&MUTEX_GE);
 
         if(Shared->BG_onblock==true)
         {
 
         bool flag=false;
         int Py=20,Px=10;
-
+         if(Shared->BG_mode=="Target")
+{
         for(int t1=0;t1<31;t1++)
         {   
             for(int t2=0;t2<28;t2++)
@@ -91,7 +92,19 @@ while(1)
           
             Px=tempx;
             Py=tempy;
-
+        }
+else if(Shared->BG_mode=="Frightened")
+        {
+            Py=rand()%31;
+            Px=rand()%28;
+            srand(time(0));
+            
+        }
+        else if(Shared->BG_mode=="Locked")
+        {
+            Py=11;
+            Px=14;
+        }
             int x=Shared->BG_xcord;
             int y=Shared->BG_ycord;
 
@@ -158,11 +171,21 @@ while(1)
               Shared->BG_onblock=false;
 
         }
-    pthread_mutex_unlock(&MUTEX_BG);
+        else if(Shared->BG_mode=="Locked1")
+        {
+            if(Shared->key[0][1]==2 && Shared->key[1][1]==1  && Shared->locked_delay>=8)
+            {
+                Shared->BG_mode="Locked_out";
+                Shared->key[0][1]=0;
+                Shared->key[1][1]=0;
+                Shared->locked_delay=0;
+            }
+        }
+    pthread_mutex_unlock(&MUTEX_GE);
 
   
 
 }
 
-pthread_mutex_destroy(&MUTEX_BG);
+
 }

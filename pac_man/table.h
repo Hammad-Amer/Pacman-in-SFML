@@ -6,13 +6,15 @@
 #include <iostream>
 #include<sstream>
 #include<string>
+#include <pthread.h>
+#include <unistd.h>
 using namespace sf;
 
 class Grid
 {
 public:
-Sprite wallsS,FrontS,Scoins;
-Texture wallsT,FrontT,Tcoins;
+Sprite wallsS,FrontS,Scoins,Spellets;
+Texture wallsT,FrontT,Tcoins,Tpellets;
 
 Grid()
 {
@@ -25,6 +27,9 @@ FrontS.setTexture(FrontT);
 Tcoins.loadFromFile("images/coins.png");
 Scoins.setTexture(Tcoins);
 Scoins.setScale(25.0f/Tcoins.getSize().x,25.0f/Tcoins.getSize().y);
+Tpellets.loadFromFile("images/pellet.png");
+Spellets.setTexture(Tpellets);
+Spellets.setScale(25.0f/Tpellets.getSize().x,25.0f/Tpellets.getSize().y);
 }
 
 void drawtable(char table[][28], RenderWindow& window)
@@ -43,6 +48,13 @@ for(int i=0;i<31;i++)
         {
             Scoins.setPosition(j2*25  , i2*25 );
             window.draw(Scoins);
+        }
+
+        if(table[i][j]=='#')
+        {
+
+            Spellets.setPosition(j2*25  , i2*25 );
+            window.draw(Spellets);
         }
 
     }
@@ -151,6 +163,57 @@ for (int i = 0; i < 31; ++i)
 }
 return false;
 }
+
+bool PacmanPallete(char table[][28],const FloatRect& pacmanRect)
+{
+     for (int i = 0; i < 31; i++) {
+            for (int j = 0; j < 28; j++) 
+            {
+                if (table[i][j] == '#' )
+                    {
+                    FloatRect wallRect((j+3) * 25 , (i+2) * 25 , 25, 25); 
+                    if (pacmanRect.intersects(wallRect)) 
+                    {
+                        table[i][j]=' ';
+                        return true; 
+                    }
+
+                    }
+            }
+     }
+    return false;
+}
+
+
+bool Ghost_coll(const FloatRect& pacman , const FloatRect& Ghost) 
+{
+  
+  if(pacman.intersects(Ghost))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool Get_locked(const FloatRect& GhostRect)
+{
+    float cellX = (14+3) * 25; 
+    float cellY = (11+2) * 25;
+    float cellRight = cellX + 25; 
+    float cellBottom = cellY + 25; 
+
+
+
+      return (GhostRect.left >= cellX &&
+          GhostRect.left + GhostRect.width <= cellRight &&  
+          GhostRect.top >= cellY &&
+          GhostRect.top + GhostRect.height <= cellBottom);
+}
+
+
+
+
+
 
 
 

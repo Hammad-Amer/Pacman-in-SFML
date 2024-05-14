@@ -6,7 +6,7 @@
 
 //this is for the blue ghost
 
-pthread_mutex_t MUTEX_OG=PTHREAD_MUTEX_INITIALIZER;
+
 
 void* Ghost4_f(void* arg)
 {
@@ -17,13 +17,16 @@ Shared=(Global_varibale*)(arg);
 while(1)
 {
 
-    pthread_mutex_lock(&MUTEX_OG);
+    pthread_mutex_lock(&MUTEX_GE);
 
         if(Shared->OG_onblock==true)
         {
 
         bool flag=false;
         int Py=20,Px=10;
+        
+        if(Shared->OG_mode=="Target")
+        {
 
         for(int t1=0;t1<31;t1++)
         {   
@@ -52,13 +55,24 @@ while(1)
         }
 
 
-            if(Shared->OG_xcord<Px+8 && Shared->OG_xcord>Px-8 && Shared->OG_ycord < Py+8 && Shared->BG_ycord>Py-8)
-            {
-                Py=32;
-                Px=0;
-            }
+        if(Shared->OG_xcord<Px+8 && Shared->OG_xcord>Px-8 && Shared->OG_ycord < Py+8 && Shared->BG_ycord>Py-8)
+        {
+            Py=32;
+            Px=0;
+        }
+}
+else if(Shared->OG_mode=="Frightened")
+        {
+            Py=rand()%31;
+            Px=rand()%28;
+            srand(time(0));
             
-
+        }    
+else if(Shared->OG_mode=="Locked")
+        {
+            Py=11;
+            Px=14;
+        }
             int x=Shared->OG_xcord;
             int y=Shared->OG_ycord;
 
@@ -125,11 +139,21 @@ while(1)
               Shared->OG_onblock=false;
 
         }
-    pthread_mutex_unlock(&MUTEX_OG);
+        else if(Shared->OG_mode=="Locked1")
+        {
+            if(Shared->key[0][0]==1 && Shared->key[0][1]==2  && Shared->locked_delay>=8)
+            {
+                Shared->OG_mode="Locked_out";
+                Shared->key[0][0]=0;
+                Shared->key[0][1]=0;
+                Shared->locked_delay=0;
+            }
+        }
+    pthread_mutex_unlock(&MUTEX_GE);
 
   
 
 }
 
-pthread_mutex_destroy(&MUTEX_OG);
+
 }
